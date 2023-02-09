@@ -1,27 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NodeJs</title>
-    <link rel="stylesheet" href="">
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            font-family: "Roboto Light", sans-serif;
-            font-size: 20px;
-            background: cadetblue;
-            color: white;
-        }
-        h1 {
-            text-transform: uppercase;
-        }
-    </style>
-</head>
-<body>
-<h1>Something going wrong</h1>
+<%- include('./partials/head.ejs')%>
+<body class="error">
+<h1 class="error-code">404</h1>
+<p>Something going wrong...</p>
 </body>
 </html>
