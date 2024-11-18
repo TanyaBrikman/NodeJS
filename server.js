@@ -41,9 +41,90 @@ app.get('/', (req, res) => {
     res.render(createPath('index'), {title})
 })
 
-app.use(postRoutes)
-app.use(contactRoutes)
-app.use(postApiRoutes)
+app.get('/posts/:id', (req, res) => {
+    const title = 'Post'
+    Post
+        .findById(req.params.id)
+        .then((post) => res.render(createPath('post'), {post, title}))
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+
+app.delete('/posts/:id', (req, res) => {
+    const title = 'Post'
+    Post
+        .findByIdAndDelete(req.params.id)
+        .then(result => {
+            res.sendStatus(200)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+
+app.get('/edit/:id', (req, res) => {
+    const title = 'Edit Post'
+    Post
+        .findById(req.params.id)
+        .then((post) => res.render(createPath('edit-post'), {post, title}))
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+
+app.put('/edit/:id', (req, res) => {
+    const {title, author, text } = req.body
+    const { id } = req.params
+    Post
+        .findByIdAndUpdate(id, { title, author, text })
+        .then(result => res.redirect(`/posts/${id}`))
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+
+app.get('/posts', (req, res) => {
+    const title = 'Posts'
+    Post
+        .find()
+        .sort({createdAt: -1})
+        .then((posts) => res.render(createPath('posts'), {posts, title}))
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+nameUser.usernam
+//Обработка post запроса
+app.post('/add-post', (req, res) => {
+    const {title, author, text} = req.body
+    const post = new Post({title, author, text})
+    post.save()
+        .then((result) => res.redirect('/posts'))
+        .catch((error) => {
+            console.log(error)
+            res.render(createPath('error'), {title: 'Error'})
+        })
+})
+
+app.get('/add-post', (req, res) => {
+    const title = 'Add post'
+    res.render(createPath('add-post'), {title})
+})
+
+app.get('/contacts', (req, res) => {
+    const title = 'Contacts'
+    const contacts = [
+        {name: 'GitHub', link: 'https://github.com/TanyaBrikman'},
+        {name: 'YouTube', link: 'https://www.youtube.com/TanyaBrikman'},
+    ]
+    res.render(createPath('contact'), {contacts, title})
+})
 
 app.use((req, res) => {
     const title = 'Error page'
